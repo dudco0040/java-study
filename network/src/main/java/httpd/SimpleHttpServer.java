@@ -1,8 +1,6 @@
 package httpd;
 
-
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,19 +13,13 @@ public class SimpleHttpServer {
 		ServerSocket serverSocket = null;
 
 		try {
-			// 1. Create Server Socket
 			serverSocket = new ServerSocket();
-			   
-			// 2. Bind
-			String localhost = InetAddress.getLocalHost().getHostAddress();
-			serverSocket.bind( new InetSocketAddress("0.0.0.0", PORT ) );
-			consolLog("starts...[ " + PORT + "]");
+
+			serverSocket.bind( new InetSocketAddress( "0.0.0.0", PORT ) );
+			consolLog("starts...[" + PORT + "]");
 
 			while (true) {
-				// 3. Wait for connecting ( accept )
 				Socket socket = serverSocket.accept();
-
-				// 4. Delegate Processing Request
 				new RequestHandler(socket).start();
 			}
 
@@ -46,6 +38,6 @@ public class SimpleHttpServer {
 	}
 
 	public static void consolLog(String message) {
-		System.out.println("[HttpServer#" + Thread.currentThread().getId()  + "] " + message);  // 스레드 id 를 출력 - 멀티 스레드이기 때문
+		System.out.println("[HttpServer#" + Thread.currentThread().getId()  + "] " + message);
 	}
 }

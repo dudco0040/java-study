@@ -12,6 +12,7 @@ import java.nio.file.Files;
 public class RequestHandler extends Thread {
 	private Socket socket;
 	private final String DOCUMENT_ROOT = "./webapp";
+	
 	public RequestHandler( Socket socket ) {
 		this.socket = socket;
 	}
@@ -19,27 +20,24 @@ public class RequestHandler extends Thread {
 	@Override
 	public void run() {
 		try {
-			// get IOStream
 			OutputStream outputStream = socket.getOutputStream();
-			// 브라우저가 보내는 바디 내용
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));  // 읽어오기 쉽게 - 라이브러리를 사용해서  
-		
-
-			// logging Remote Host IP Address & Port
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
+			
 			InetSocketAddress inetSocketAddress = ( InetSocketAddress )socket.getRemoteSocketAddress();
 			consoleLog( "connected from " + inetSocketAddress.getAddress().getHostAddress() + ":" + inetSocketAddress.getPort() );
-			// Info 남기기 
 			
 			String request = null;
+			
 			while(true) {
 				String line = br.readLine();
+				
+				// 브라우저에서 연결을 끊으면...
 				if(line == null) {
 					break;
 				}
 				
-				
-				// simpleHttpServer는 HTTP header만 처리
-				if("".equals(line)) {  //헤더와 바디의 경계로 line이 빈 String 일 때,
+				// SimpleHttpServer는 HTTP Header만 처리
+				if("".equals(line)) {
 					break;
 				}
 				
@@ -48,50 +46,32 @@ public class RequestHandler extends Thread {
 					request = line;
 					break;
 				}
-				
-				// 요청처리
-				consoleLog(line);
-				String[] tokens = request.split(" ");
-				if("GET".equals(tokens[0])) {
-					responseStaticResource(outputStream, tokens[1], tokens[2]); // url, 프로토골
-				} else {  // 이 경우는 C,U,D
-					/* methods: POST(create), GET(read), PUT(update), DELETE(delete) - CRUD. HEAD, CONNECT, ... */
-					// simpleHttpServer 에서는 무시(400 bad request)
-//					response404Error(outputStream, tokens[2]);
-					
-					
-				}
 			}
 			
-			// 요청을 읽지도 않고 응답을 함 - 어떤 요청이든 우선 200 ok 응답을 보내준다.
-			// 예제 응답입니다.
-			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
-//			outputStream.write( "HTTP/1.1 200 OK\n".getBytes( "UTF-8" ) );
-//			outputStream.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
-//			outputStream.write( "\n".getBytes() );
-//			// body
-//			outputStream.write( "<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes( "UTF-8" ) );
+			// 요청 처리
+			consoleLog(request);
 			
-			
-			
-		} catch( Exception ex ) {
+			String[] tokens = request.split(" ");
+			if("GET".equals(tokens[0])) {
+				responseStaticResource(outputStream, tokens[1], tokens[2]);
+			} else {
+				// methods: POST, PUT, DELETE, HEAD, CONNECT
+				// SimpleHttpServer 에서는 무시(400 Bad Request)
+				// response400Error(outputStream, tokens[2]);
+			}
+		} catch(Exception ex) {
 			consoleLog( "error:" + ex );
 		} finally {
-			// clean-up
 			try{
 				if( socket != null && socket.isClosed() == false ) {
 					socket.close();
 				}
-				
 			} catch( IOException ex ) {
 				consoleLog( "error:" + ex );
 			}
 		}			
 	}
 
-
-	
-	
 	private void responseStaticResource(OutputStream outputStream, String url, String protocol) throws IOException {
 		// default(welcome) file set
 		if("/".equals(url)) {
@@ -108,9 +88,9 @@ public class RequestHandler extends Thread {
 		byte[] body = Files.readAllBytes(file.toPath());
 		String contentType = Files.probeContentType(file.toPath());
 		
-		outputStream.write( "HTTP/1.1 200 OK\n".getBytes( "UTF-8" ) );
-		outputStream.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
-		outputStream.write( "\n".getBytes() );
+		outputStream.write((protocol + " 200 OK\n").getBytes("UTF-8"));
+		outputStream.write(("Content-Type:" + contentType + "; charset=utf-8\n").getBytes("UTF-8"));
+		outputStream.write("\n".getBytes());
 		outputStream.write(body);
 	}
 
