@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private Socket socket;
@@ -51,7 +52,7 @@ public class RequestHandler extends Thread {
 				// 요청처리
 				consoleLog(line);
 				String[] tokens = request.split(" ");
-				if("GET".equals(tokens[0]) {
+				if("GET".equals(tokens[0])) {
 					responseStaticResource(outputStream, tokens[1], tokens[2]); // url, 프로토골
 				} else {  // 이 경우는 C,U,D
 					/* methods: POST(create), GET(read), PUT(update), DELETE(delete) - CRUD. HEAD, CONNECT, ... */
@@ -91,27 +92,29 @@ public class RequestHandler extends Thread {
 
 	
 	
-	private void responseStaticResource(outputStream, String url, String protocol) {
+	private void responseStaticResource(OutputStream outputStream, String url, String protocol) throws IOException {
+		// default(welcome) file set
 		if("/".equals(url)) {
-			url = "/index,html";
-			
+			url = "/index.html";
 		}
 		
 		File file = new File(DOCUMENT_ROOT + url);
 		if(!file.exists()) {
-//			response404error(outputStream, protocol);
-			return; 
+			// response404Error(outputStream, protocol);
+			return;
 		}
 		
 		// nio
-		byte[] body = File.readAllBytes(file.toPath());
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
 		
 		outputStream.write( "HTTP/1.1 200 OK\n".getBytes( "UTF-8" ) );
 		outputStream.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
 		outputStream.write( "\n".getBytes() );
 		outputStream.write(body);
 	}
-	private void consoleLog( String message ) {
-		System.out.println( "[RequestHandler#" + getId() + "] " + message );   // 스레드 id  - getId() 상속받았기 때문에 사용 가능 
+
+	public void consoleLog( String message ) {
+		System.out.println( "[RequestHandler#" + getId() + "] " + message );
 	}
 }
