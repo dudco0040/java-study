@@ -35,9 +35,10 @@ public class TCPServer {
 				
 				// 5. 데이터 읽기  - 기본적인 소켓 통신은 바이트 - 편의를 위해 데코레이터 사용(string으로 할 필요없으면 필요 X) 
 				while(true) {	// 서버는 무한 루프 
+					System.out.println("Try to read");
 					byte[] buffer = new byte[256];
 					int readByteCount = is.read(buffer);  //blocking
-				
+					// connection reset 
 					if(readByteCount == -1) {   //  명시적으로 소켓 close()를 호출 - 클라이언트가 정상적인 종료
 						System.out.println("[server] closed by client");
 						break; // 더 읽을 것이 없으므로 반복문 종료
@@ -50,10 +51,16 @@ public class TCPServer {
 					
 				// 6. 데이터 쓰기
 					os.write(data.getBytes("utf-8"));
+					
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 				
 			} catch(SocketException e) {
-				System.out.println("[server] suddenly closed by client");
+				System.out.println("[server] suddenly closed by client");    // 상대가 갑자기 소켓을 닫았을 떄, 반대편에서 쓰거나 읽으면 발생? 
 			} catch(IOException e) {
 				System.out.println("[server] error:" + e);
 			}finally {

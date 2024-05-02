@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
 public class EchoClient {
@@ -22,12 +23,12 @@ public class EchoClient {
 			
 			socket.connect(new InetSocketAddress("", EchoServer.PORT));
 			
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"utf=8"), true);
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf=8"));
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"utf-8"), true);
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
 			// 확인 
 			
 			while(true) {
-				System.out.println(">>");			
+				System.out.print(">>");			
 				String line = scanner.nextLine();
 				if("exit".equals(line)) {
 					break;
@@ -41,8 +42,10 @@ public class EchoClient {
 				}
 				System.out.println("<<"+ data);
 			}
+		} catch (SocketException e) {
+			log("Socket Exception: " + e);
 		} catch(IOException e) {
-			log("error:"+e);
+			log("error:" + e);
 		} finally {
 			try {
 				if(socket!=null && socket.isClosed()) {
@@ -57,7 +60,7 @@ public class EchoClient {
 	}
 		
 	private static void log(String message) {
-		
+		System.out.println("[EchoClient] " + message);
 	}
 	
 }
