@@ -9,7 +9,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-import echo.EchoServer;
 
 public class ChatClient {
 
@@ -47,39 +46,40 @@ public class ChatClient {
 			
 			// 6. ChatClientThread 시작
 			new ChatClientThread(socket).start(); // 스레드를 시작 
-			
+//			new ChatClientThread(socket, br).start(); // 스레드를 시작 
 			// 7. 키보드 입력 처리 
 			while(true) {
-				System.out.print(">>>");
+				//System.out.print(">>>");
 				String input = scanner.nextLine();  // 채팅 입력
 				// 퇴장 
 				if("quit".equals(input) == true) {
 					// 8. 프로토콜 처리 - 우리가 정한 규칙!
-					pw.println("quit");
+					pw.println("quit:");
+					break;
 				} else {
 					// 9. 메세지 처리
-					pw.println(input);
+					pw.println("message:" + input);
 				}
 			}
 		
-
 		} catch(IOException ex) {
-			ChatServer.log("error" + ex);
+			log("error" + ex);
 			
 		} finally {
 			// 10. 자원정리
 			try {
-				scanner.close();
+				
 				if(socket!=null && !socket.isClosed()) {
 					socket.close();
+					scanner.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				log("error" + e);
 			}
 		}
 	}	
-	private static void log(String message) {
-		System.out.println("[Client] " + message);
+	public static void log(String message) {
+//		System.out.println("[Client] " + message);
 	}
 }
 

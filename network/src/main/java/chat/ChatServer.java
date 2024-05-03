@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ChatServer {
 	// port 번호 
-	public static final int PORT_NO = 7000;
+	public static final int PORT_NO = 8000;
 	
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
@@ -39,7 +39,7 @@ public class ChatServer {
 			
 			try {
 				// server socket이 생성되지 않은 경우 & 닫히지 않는 경우 
-				if(serverSocket == null && !serverSocket.isClosed()) {
+				if(serverSocket != null && !serverSocket.isClosed()) {
 					serverSocket.close();
 				}
 			}catch (IOException e) {

@@ -3,11 +3,8 @@ package chat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Writer;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class ChatClientThread extends Thread implements Runnable{
 	private BufferedReader br;
@@ -16,6 +13,7 @@ public class ChatClientThread extends Thread implements Runnable{
 	
 	public ChatClientThread(Socket socket) {
 		this.socket = socket;
+//		this.br = br;
 	}	
 	
 	
@@ -26,22 +24,27 @@ public class ChatClientThread extends Thread implements Runnable{
 		// 메세지를 받으면 
 		
 		try {
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));  	// pw가 입력한 것을 br로 받음
-			String message = br.readLine();
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
 			
-			while(message!= null) {  // 버퍼에 있는 값이 null이 될 때까지 - 출력 
-				
-				System.out.println(message);
-				
+			String message ;
+			while(true) {  // 버퍼에 있는 값이 null이 될 때까지 - 출력 (message = br.readLine()) != null
+				 message = br.readLine();
+				if("quit".equals(message)) {
+					break;
+				}else {
+					System.out.println(message);
+				}
 			}
 		} catch (SocketException e ) {
-			e.printStackTrace();
+			ChatClient.log("SocketException" + e);
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			ChatClient.log("IOException" + e);
+			
 		} finally {
 			
 			try {
-				if(socket == null && !socket.isClosed()) {
+				if(socket != null && !socket.isClosed()) {
 					socket.close();
 				}
 			}catch (IOException e) {
