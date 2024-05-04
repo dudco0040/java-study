@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class ChatServer {
 				// 소켓을 RequestHandler로 전달 
 				new ChatServerThread(socket, listWriters).start();  //스레드 시작 - 
 			}
-			
-			
+		} catch (SocketException e) {
+			log("(Server Socket Exception) "+ e);
 		} catch (IOException e) {
-			log("error message:"+ e);
+			log("(Server IO Exception 1) "+ e);
 		} finally {
 			
 			try {
@@ -42,8 +43,8 @@ public class ChatServer {
 				if(serverSocket != null && !serverSocket.isClosed()) {
 					serverSocket.close();
 				}
-			}catch (IOException e) {
-					e.printStackTrace();
+			} catch (IOException e) {
+				log("(Server IO Exception 2 "+ e);
 			
 			}
 		}

@@ -49,7 +49,6 @@ public class ChatClient {
 //			new ChatClientThread(socket, br).start(); // 스레드를 시작 
 			// 7. 키보드 입력 처리 
 			while(true) {
-				//System.out.print(">>>");
 				String input = scanner.nextLine();  // 채팅 입력
 				// 퇴장 
 				if("quit".equals(input) == true) {
@@ -62,8 +61,9 @@ public class ChatClient {
 				}
 			}
 		
+		// socket exception
 		} catch(IOException ex) {
-			log("error" + ex);
+			log("(Client IO Exception 1) " + ex);
 			
 		} finally {
 			// 10. 자원정리
@@ -74,12 +74,13 @@ public class ChatClient {
 					scanner.close();
 				}
 			} catch (IOException e) {
-				log("error" + e);
+				log("(Client IO Exception 2) " + e);
 			}
 		}
-	}	
+	}
+	
 	public static void log(String message) {
-//		System.out.println("[Client] " + message);
+		System.out.println("[Client] " + message);
 	}
 }
 

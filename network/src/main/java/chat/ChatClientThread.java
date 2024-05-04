@@ -7,13 +7,10 @@ import java.net.Socket;
 import java.net.SocketException;
 
 public class ChatClientThread extends Thread implements Runnable{
-	private BufferedReader br;
-	// 소켓생성
 	Socket socket = null;
 	
 	public ChatClientThread(Socket socket) {
 		this.socket = socket;
-//		this.br = br;
 	}	
 	
 	
@@ -36,10 +33,10 @@ public class ChatClientThread extends Thread implements Runnable{
 				}
 			}
 		} catch (SocketException e ) {
-			ChatClient.log("SocketException" + e);
+//			ChatClient.log("(Client Thread SocketException) " + e); // 출력 X
 			
 		} catch (IOException e) {
-			ChatClient.log("IOException" + e);
+			ChatClient.log("(Clietn Thread IO Exception 1) " + e);
 			
 		} finally {
 			
@@ -48,7 +45,7 @@ public class ChatClientThread extends Thread implements Runnable{
 					socket.close();
 				}
 			}catch (IOException e) {
-					e.printStackTrace();
+					ChatClient.log("(Clietn Thread IO Exception 2) " + e);
 			
 			}
 		}
