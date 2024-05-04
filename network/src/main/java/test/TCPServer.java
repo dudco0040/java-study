@@ -17,6 +17,9 @@ public class TCPServer {
 			// 1. server socket 생성
 			serverSocket = new ServerSocket();
 			
+			// 1.1 FIN_WAIT2 -> TIME_WAIT - 클라이언트가 많을 경우, port boinding이 안됨  -  TIME_WAIT 상태에서도 소켓포트할당이 가능하도록 하기 위해 
+			serverSocket.setReuseAddress(true);
+			
 			// 2. 바인딩 - 소켓의 주소(InetSocketAddress[InetAddress(IPAdress)+port])를 binding
 			serverSocket.bind(new InetSocketAddress("0.0.0.0", 4000), 10);   // (IP, port), backlog
 			
@@ -35,7 +38,7 @@ public class TCPServer {
 				
 				// 5. 데이터 읽기  - 기본적인 소켓 통신은 바이트 - 편의를 위해 데코레이터 사용(string으로 할 필요없으면 필요 X) 
 				while(true) {	// 서버는 무한 루프 
-					System.out.println("Try to read");
+					// System.out.println("Try to read");
 					byte[] buffer = new byte[256];
 					int readByteCount = is.read(buffer);  //blocking
 					// connection reset 
@@ -50,6 +53,12 @@ public class TCPServer {
 				
 					
 				// 6. 데이터 쓰기
+				// SO_TIMEOUT 테스트
+//					try {
+//						Thread.sleep(3000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
 					os.write(data.getBytes("utf-8"));
 					
 					try {
