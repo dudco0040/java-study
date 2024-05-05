@@ -56,7 +56,6 @@ public class ChatClientApp {
 			System.out.println("IOException");
 		}
 		
-		
 		new ChatWindow(name, socket).show();   // 윈도우 창이 열림 - 여기서 join 프로토콜을 해놓고 감 - name, socket 모두 넘거야함 
 	}
 
