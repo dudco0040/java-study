@@ -52,7 +52,7 @@ public class ChatServer {
 	
 	
 	public static void log(String message) {
-		System.out.println("[Chat Server] error: " + message);
+		System.out.println("[Chat Server] " + message);
 	}
 
 }

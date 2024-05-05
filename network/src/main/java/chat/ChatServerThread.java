@@ -45,7 +45,7 @@ public class ChatServerThread extends Thread {
 				String request = br.readLine();  // socket에서 입력 pw 입력한걸 br로 받음 
 				
 				if(request == null) {
-					ChatServer.log("Closed by Clent...");
+					ChatServer.log("Closed by Clent...");  // ctrl+c
 					doQuit(pw);
 					break;
 				}
@@ -66,6 +66,7 @@ public class ChatServerThread extends Thread {
 				} else if ("quit".equals(tokens[0])) {
 					// 퇴장
 					 doQuit(pw);
+					 ChatServer.log("Closed by Clent...");
 					 break;
 					// 상대방에게 퇴장 알림 
 					// Socket Exception 활용 - 비정상 종료 => 여기 말고 else 에 위치??
@@ -79,10 +80,12 @@ public class ChatServerThread extends Thread {
 			
 			
 		} catch(SocketException e) {
-			ChatServer.log("(Server Thread Socket Exception) " + e);
 			// 그냥 나갔을 때 
 			// 상대방 client thread에 나감 메세지 전송
 			doQuit(pw);
+//			ChatServer.log("(Server Thread Socket Exception) " + e);
+			ChatServer.log("시스템이 비정상 종료되었습니다. (" + e + ")");
+
 			
 		} catch(IOException e) {
 			ChatServer.log("(Server Thread IOException 1) " + e);
