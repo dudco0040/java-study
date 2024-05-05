@@ -48,7 +48,7 @@ public class ChatClientApp {
 			if("join:ok".equals(data)) {
 				System.out.println("입장하였습니다. 즐거운 채팅 되세요.");
 			}
-//			pw.flush();
+			// pw.flush();
 			
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("UnsupportedEncodingException" + e);

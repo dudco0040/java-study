@@ -107,38 +107,6 @@ public class ChatWindow {
 		// 소켓을 받아옴
 		// IOStream 받아오기  - print writer - 스캐너는 필요 없음 
 		
-		
-		
-//		try {
-//			socket = new Socket(); // 기존에 연결한것 사용
-//			socket.connect(new InetSocketAddress("", ChatServer.PORT_NO));
-			
-//			InputStream is = socket.getInputStream();
-//			OutputStream os = socket.getOutputStream();
-//			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"utf-8"), true);
-//			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
-			
-			// 1.  스레드 생성- 
-//			new ChatClientThread().start();  
-//			ChatClientThread clientThread = new ChatClientThread(br);
-//            clientThread.start();
-			
-//		} catch (SocketException e ) {
-//			e.printStackTrace();	
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} finally {
-//			// 자원 정리 
-//			try {
-//				if(socket != null && !socket.isClosed()) {
-//					socket.close();
-//				}
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-//	}
-
 
 	private void sendMessage() {
 //		try {
@@ -155,13 +123,6 @@ public class ChatWindow {
 				// ChatClientThread에서 서버로 부터 받은 메세지가 있다고 가정하고, 
 				pw.println("message:" + message);   // 서버에게 
 			}
-//			
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		
 		
 		textField.setText("");
 		textField.requestFocus();
@@ -172,8 +133,10 @@ public class ChatWindow {
 	
 	// ** 
 	private void updateTextArea(String message) {
-		textArea.append(message);
-		textArea.append("\n");
+		if(message != null) {
+			textArea.append(message);
+			textArea.append("\n");
+		} else {}  // pass
 	}
 	
 	private void finish() {
@@ -188,15 +151,7 @@ public class ChatWindow {
 	// 스레드를 내부에 만들어야 함
 	// br은 내가 보낼때 
 	
-	private class ChatClientThread extends Thread {
-//		Socket socket = null;
-//		private BufferedReader br;
-		
-//		public void ChatClientThread(Socket socket, BufferedReader br) {
-//			this.socket = socket;
-//			this.br = br;
-//		}
-		
+	private class ChatClientThread extends Thread {		
 		@Override
 		public void run() {
 //			String message = br.readLine();
@@ -233,20 +188,6 @@ public class ChatWindow {
 				
 				}
 			}
-			
-			
-//			try {
-//				String message;
-//				while((message= br.readLine())!=null) {
-//					updateTextArea(message);
-//				}
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			
-			// text area 에 뿌리기
-//			updateTextArea("마이콜 밥먹으러 가자");
-//			updateTextArea(message);
 			
 		}
 	}
