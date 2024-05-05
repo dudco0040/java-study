@@ -35,7 +35,6 @@ public class ChatClient {
 			String nickname = scanner.nextLine();   // 닉네임 입력
 			pw.println("join:" + nickname);  		// pw로 서버에 전송  
 			// printWriter.flush(); // 보내준다. 
-			// br 읽으세요
 			String data = br.readLine();
 			
 			// 입장 알림을 출력 - "join:ok"일 경우 welcome 메세지 출력
@@ -46,7 +45,7 @@ public class ChatClient {
 			
 			// 6. ChatClientThread 시작
 			new ChatClientThread(socket).start(); // 스레드를 시작 
-//			new ChatClientThread(socket, br).start(); // 스레드를 시작 
+			
 			// 7. 키보드 입력 처리 
 			while(true) {
 				String input = scanner.nextLine();  // 채팅 입력

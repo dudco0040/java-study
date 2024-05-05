@@ -18,7 +18,6 @@ public class ChatClientThread extends Thread implements Runnable{
 	public void run() {
 		// *** reader를 통해 읽은 데이터 콘솔에 출력하기 - message 처리
 		// 내 메세지가 client 콘솔에 출력 됨
-		// 메세지를 받으면 
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
@@ -28,7 +27,7 @@ public class ChatClientThread extends Thread implements Runnable{
 				 message = br.readLine();
 				if("quit".equals(message)) {
 					break;
-				}else {
+				} else {
 					System.out.println(message);
 				}
 			}
@@ -44,7 +43,7 @@ public class ChatClientThread extends Thread implements Runnable{
 				if(socket != null && !socket.isClosed()) {
 					socket.close();
 				}
-			}catch (IOException e) {
+			} catch (IOException e) {
 					ChatClient.log("(Clietn Thread IO Exception 2) " + e);
 			
 			}
