@@ -39,7 +39,7 @@ public class ChatServer {
 		} finally {
 			
 			try {
-				// server socket이 생성되지 않은 경우 & 닫히지 않는 경우 
+				// server socket 생성 완료 & 닫히지 않는 경우 
 				if(serverSocket != null && !serverSocket.isClosed()) {
 					serverSocket.close();
 				}
