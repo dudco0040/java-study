@@ -3,7 +3,7 @@ package behavioral.iterator;
 public class Client {
 
 	public static void main(String[] args) {
-		Aggregate<String> fruits = new AggreGateImpl<>(new String[] {"apple","banana","mongo","orange");
+		Aggregate<String> fruits = new AggregateImpl<>(new String[] {"apple","banana","mongo","orange"});
 		Iterator<String> it = fruits.createIterator();
 		
 		
