@@ -1,4 +1,4 @@
-package behavioural.iterator;
+package behavioral.iterator;
 
 public class Client {
 

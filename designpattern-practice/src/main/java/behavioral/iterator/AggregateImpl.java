@@ -1,4 +1,4 @@
-package behavioural.iterator;
+package behavioral.iterator;
 
 public class AggregateImpl<E> implements Aggregate<E> {
 	private E[] data = null;
