@@ -32,11 +32,11 @@ public class UDPEchoClient {
 				// 3. 보내기
 				byte[] sndData = message.getBytes("UTF-8");
 				DatagramPacket sndPacket = new DatagramPacket(
-						sndData, sndData.length, new InetSocketAddress(SERVER_IP, UDPEchoServer.PORT));
+						sndData, sndData.length, new InetSocketAddress(SERVER_IP, UDPEchoServer.PORT));  	// 패킷 생성 
 				socket.send(sndPacket);
 				
 				// 4. 받기
-				DatagramPacket rcvPacket = new DatagramPacket(new byte[UDPEchoServer.BUFFER_SIZE], UDPEchoServer.BUFFER_SIZE);
+				DatagramPacket rcvPacket = new DatagramPacket(new byte[UDPEchoServer.BUFFER_SIZE], UDPEchoServer.BUFFER_SIZE);  // 서버에게 받을 패킷 생성 
 				socket.receive(rcvPacket);
 				
 				byte[] rcvData = rcvPacket.getData();

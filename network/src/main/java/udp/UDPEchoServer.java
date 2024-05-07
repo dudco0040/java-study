@@ -21,7 +21,7 @@ public class UDPEchoServer {
 				socket.receive(rcvPacket);
 				
 				byte[] rcvData = rcvPacket.getData();
-				int offset = rcvPacket.getLength();   // blocking
+				int offset = rcvPacket.getLength();   // blocking 발생 - receive()가 데이터를 수신할 때까지 기다리며 데이터가 도착하면 blocking 이 해제됨
 				
 				String message = new String(rcvData, 0, offset, "UTF-8");
 				System.out.println("[UDP Echo Server] received: "+ message);
