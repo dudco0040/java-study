@@ -7,20 +7,43 @@ public class Prob05 {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner( System.in );
-
-		while( true ) {
+		
 			
+		while( true ) {
+			int min = 0;
+			int max = 100;
 			/* 게임 작성 */
-
+			
 			// 정답 램덤하게 만들기
 			Random random = new Random();
 			int correctNumber = random.nextInt( 100 ) + 1;
-			System.out.println(correctNumber);
+			System.out.println("정답" + correctNumber);
+			
+			// 1-100
+			System.out.println(min + "-" + max);
+			System.out.print(">>");
+			
+			int number = scanner.nextInt();
 			
 			//무한루프
 			while(true) {
 				// 1~100 범위를 알려주고, private 
-				if() {
+				if(number < correctNumber) {
+					System.out.println("더 높게! ");
+					min = number;
+					System.out.println(min + "-" + max);
+					System.out.print(">>");
+					number = scanner.nextInt();
+					
+				} else if (number > correctNumber) {	
+					System.out.println("더 낮게! ");
+					max = number;
+					System.out.println(min + "-" + max);
+					System.out.print(">>");
+					number = scanner.nextInt();
+					
+				} else {
+					System.out.println("정답입니다!");
 					break;
 				}
 			}
@@ -29,8 +52,12 @@ public class Prob05 {
 			//새 게임 여부 확인하기
 			System.out.print( "다시 하겠습니까(y/n)>>" );
 			String answer = scanner.next();
-			if( "y".equals( answer ) == false ) {
+			if( answer.equals("n")) {
 				break;
+//			} else if( (answer.equals("n") && answer.equals("y")) == false) {
+//				System.out.println("다시 입력해주세요. (y/n)");
+//				answer = scanner.next();
+//				
 			}
 		}
 		
