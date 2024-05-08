@@ -9,9 +9,8 @@ public class MyStack03<T> {  // T: Type - 제너릭 메소드 사용하기
 	public MyStack03(int capacity) {
 		top = -1;
 		buffer = (T[])new Object[capacity];  // 실행 타입에 T는 불가능 - Object로 생성하고 캐스팅하는 방법 사용
-		buffer = (T[])Array.newInstance(getClass(), capacity);
-		// new instance
-
+//		buffer = (T[])Array.newInstance(klass, capacity);
+	}
 		
 	public void push(T s) {
 		if (top == buffer.length - 1) {
@@ -26,7 +25,7 @@ public class MyStack03<T> {  // T: Type - 제너릭 메소드 사용하기
 			throw new MyStackException("stack is empty");
 		}
 
-		String result = buffer[top];
+		T result = buffer[top];
 		buffer[top--] = null;
 
 		return result;
@@ -37,7 +36,7 @@ public class MyStack03<T> {  // T: Type - 제너릭 메소드 사용하기
 	}
 
 	private void resize() {
-		String[] temp = new String[buffer.length * 2];
+		T[] temp = (T[])new Object[buffer.length * 2];
 		for (int i = 0; i <= top; i++) {
 			temp[i] = buffer[i];
 		}
