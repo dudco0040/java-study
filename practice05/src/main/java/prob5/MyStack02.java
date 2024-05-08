@@ -2,19 +2,19 @@ package prob5;
 
 public class MyStack02 {
 	private int top;
-	private String[] buffer;
+	private Object[] buffer;
 
 	public MyStack02(int capacity) {
 		top = -1;
 		buffer = new String[capacity];
 	}
 
-	public void push(String s) {
+	public void push(Object s) {
 		if (top == buffer.length - 1) {
 			resize();
 		}
 
-		buffer[++top] = s;		
+		buffer[++top] = s;	
 	}
 
 	public Object pop() throws MyStackException {
@@ -22,7 +22,7 @@ public class MyStack02 {
 			throw new MyStackException("stack is empty");
 		}
 
-		String result = buffer[top];
+		Object result = buffer[top];
 		buffer[top--] = null;
 
 		return result;
@@ -33,7 +33,7 @@ public class MyStack02 {
 	}
 
 	private void resize() {
-		String[] temp = new String[buffer.length * 2];
+		Object[] temp = new Object[buffer.length * 2];
 		for (int i = 0; i <= top; i++) {
 			temp[i] = buffer[i];
 		}
