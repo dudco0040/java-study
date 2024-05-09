@@ -8,5 +8,9 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
+ <build>
+	<finalName>chapter03</finalName>
+ </build>
+
   <artifactId>chapter03</artifactId>
 </project>
